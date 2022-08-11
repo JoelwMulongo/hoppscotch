@@ -3,11 +3,14 @@ import * as TE from "fp-ts/TaskEither"
 import { execPreRequestScript } from "./preRequest"
 import {
   execTestScript,
-  TestResponse,
+  TestResponse as _TestResponse,
   TestDescriptor as _TestDescriptor,
   TestResult,
 } from "./test-runner"
 
+export * from "./test-runner"
+
+export type TestResponse = _TestResponse
 export type TestDescriptor = _TestDescriptor
 export type SandboxTestResult = TestResult & { tests: TestDescriptor }
 
@@ -34,7 +37,7 @@ export const runTestScript = (
 /**
  * Executes a given pre-request script on the sandbox
  * @param preRequestScript The script to run
- * @param env The envirionment variables active
+ * @param env The environment variables active
  * @returns A TaskEither with an error message or an array of the final environments with the all the script values applied
  */
 export const runPreRequestScript = execPreRequestScript

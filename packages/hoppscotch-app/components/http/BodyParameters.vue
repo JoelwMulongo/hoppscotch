@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="sticky z-10 flex items-center justify-between pl-4 border-b bg-primary border-dividerLight top-upperTertiaryStickyFold"
+      class="sticky z-10 flex items-center justify-between pl-4 border-b bg-primary border-dividerLight top-upperMobileRawStickyFold sm:top-upperMobileRawTertiaryStickyFold"
     >
       <label class="font-semibold text-secondaryLight">
         {{ $t("request.body") }}
@@ -28,98 +28,118 @@
         />
       </div>
     </div>
-    <div
-      v-for="(param, index) in workingParams"
-      :key="`param-${index}`"
-      class="flex border-b divide-x divide-dividerLight border-dividerLight"
+    <draggable
+      v-model="workingParams"
+      animation="250"
+      handle=".draggable-handle"
+      draggable=".draggable-content"
+      ghost-class="cursor-move"
+      chosen-class="bg-primaryLight"
+      drag-class="cursor-grabbing"
     >
-      <SmartEnvInput
-        v-model="param.key"
-        :placeholder="`${$t('count.parameter', { count: index + 1 })}`"
-        @change="
-          updateBodyParam(index, {
-            key: $event,
-            value: param.value,
-            active: param.active,
-            isFile: param.isFile,
-          })
-        "
-      />
-      <div v-if="param.isFile" class="file-chips-container hide-scrollbar">
-        <div class="space-x-2 file-chips-wrapper">
-          <SmartFileChip
-            v-for="(file, fileIndex) in param.value"
-            :key="`param-${index}-file-${fileIndex}`"
-          >
-            {{ file.name }}
-          </SmartFileChip>
-        </div>
-      </div>
-      <span v-else class="flex flex-1">
+      <div
+        v-for="({ id, entry }, index) in workingParams"
+        :key="`param=${id}-${index}`"
+        class="flex border-b divide-x divide-dividerLight border-dividerLight draggable-content group"
+      >
+        <span>
+          <ButtonSecondary
+            svg="grip-vertical"
+            class="cursor-auto text-primary hover:text-primary"
+            :class="{
+              'draggable-handle group-hover:text-secondaryLight !cursor-grab':
+                index !== workingParams?.length - 1,
+            }"
+            tabindex="-1"
+          />
+        </span>
         <SmartEnvInput
-          v-model="param.value"
-          :placeholder="`${$t('count.value', { count: index + 1 })}`"
+          v-model="entry.key"
+          :placeholder="`${$t('count.parameter', { count: index + 1 })}`"
           @change="
             updateBodyParam(index, {
-              key: param.key,
-              value: $event,
-              active: param.active,
-              isFile: param.isFile,
+              key: $event,
+              value: entry.value,
+              active: entry.active,
+              isFile: entry.isFile,
             })
           "
         />
-      </span>
-      <span>
-        <label :for="`attachment${index}`" class="p-0">
-          <input
-            :id="`attachment${index}`"
-            :ref="`attachment${index}`"
-            :name="`attachment${index}`"
-            type="file"
-            multiple
-            class="p-1 cursor-pointer transition file:transition file:cursor-pointer text-secondaryLight hover:text-secondaryDark file:mr-2 file:py-1 file:px-4 file:rounded file:border-0 file:text-tiny text-tiny file:text-secondary hover:file:text-secondaryDark file:bg-primaryLight hover:file:bg-primaryDark"
-            @change="setRequestAttachment(index, param, $event)"
+        <div v-if="entry.isFile" class="file-chips-container hide-scrollbar">
+          <div class="space-x-2 file-chips-wrapper">
+            <SmartFileChip
+              v-for="(file, fileIndex) in entry.value"
+              :key="`param-${index}-file-${fileIndex}`"
+              >{{ file.name }}</SmartFileChip
+            >
+          </div>
+        </div>
+        <span v-else class="flex flex-1">
+          <SmartEnvInput
+            v-model="entry.value"
+            :placeholder="`${$t('count.value', { count: index + 1 })}`"
+            @change="
+              updateBodyParam(index, {
+                key: entry.key,
+                value: $event,
+                active: entry.active,
+                isFile: entry.isFile,
+              })
+            "
           />
-        </label>
-      </span>
-      <span>
-        <ButtonSecondary
-          v-tippy="{ theme: 'tooltip' }"
-          :title="
-            param.hasOwnProperty('active')
-              ? param.active
-                ? $t('action.turn_off')
-                : $t('action.turn_on')
-              : $t('action.turn_off')
-          "
-          :svg="
-            param.hasOwnProperty('active')
-              ? param.active
-                ? 'check-circle'
-                : 'circle'
-              : 'check-circle'
-          "
-          color="green"
-          @click.native="
-            updateBodyParam(index, {
-              key: param.key,
-              value: param.value,
-              active: param.hasOwnProperty('active') ? !param.active : false,
-              isFile: param.isFile,
-            })
-          "
-        />
-      </span>
-      <span>
-        <ButtonSecondary
-          v-tippy="{ theme: 'tooltip' }"
-          :title="$t('action.remove')"
-          svg="trash"
-          color="red"
-          @click.native="deleteBodyParam(index)"
-        />
-      </span>
-    </div>
+        </span>
+        <span>
+          <label :for="`attachment${index}`" class="p-0">
+            <input
+              :id="`attachment${index}`"
+              :ref="`attachment${index}`"
+              :name="`attachment${index}`"
+              type="file"
+              multiple
+              class="p-1 cursor-pointer transition file:transition file:cursor-pointer text-secondaryLight hover:text-secondaryDark file:mr-2 file:py-1 file:px-4 file:rounded file:border-0 file:text-tiny text-tiny file:text-secondary hover:file:text-secondaryDark file:bg-primaryLight hover:file:bg-primaryDark"
+              @change="setRequestAttachment(index, entry, $event)"
+            />
+          </label>
+        </span>
+        <span>
+          <ButtonSecondary
+            v-tippy="{ theme: 'tooltip' }"
+            :title="
+              entry.hasOwnProperty('active')
+                ? entry.active
+                  ? $t('action.turn_off')
+                  : $t('action.turn_on')
+                : $t('action.turn_off')
+            "
+            :svg="
+              entry.hasOwnProperty('active')
+                ? entry.active
+                  ? 'check-circle'
+                  : 'circle'
+                : 'check-circle'
+            "
+            color="green"
+            @click.native="
+              updateBodyParam(index, {
+                key: entry.key,
+                value: entry.value,
+                active: entry.hasOwnProperty('active') ? !entry.active : false,
+                isFile: entry.isFile,
+              })
+            "
+          />
+        </span>
+        <span>
+          <ButtonSecondary
+            v-tippy="{ theme: 'tooltip' }"
+            :title="$t('action.remove')"
+            svg="trash"
+            color="red"
+            @click.native="deleteBodyParam(index)"
+          />
+        </span>
+      </div>
+    </draggable>
     <div
       v-if="workingParams.length === 0"
       class="flex flex-col items-center justify-center p-4 text-secondaryLight"
@@ -130,9 +150,7 @@
         class="inline-flex flex-col object-contain object-center w-16 h-16 my-4"
         :alt="`${$t('empty.body')}`"
       />
-      <span class="pb-4 text-center">
-        {{ $t("empty.body") }}
-      </span>
+      <span class="pb-4 text-center">{{ $t("empty.body") }}</span>
       <ButtonSecondary
         :label="`${$t('add.new')}`"
         filled
@@ -146,15 +164,23 @@
 
 <script setup lang="ts">
 import { ref, Ref, watch } from "@nuxtjs/composition-api"
+import { flow, pipe } from "fp-ts/function"
+import * as O from "fp-ts/Option"
+import * as A from "fp-ts/Array"
 import { FormDataKeyValue } from "@hoppscotch/data"
 import isEqual from "lodash/isEqual"
 import { clone } from "lodash"
+import draggable from "vuedraggable"
 import { pluckRef, useI18n, useToast } from "~/helpers/utils/composables"
 import { useRESTRequestBody } from "~/newstore/RESTSession"
+
+type WorkingFormDataKeyValue = { id: number; entry: FormDataKeyValue }
 
 const t = useI18n()
 
 const toast = useToast()
+
+const idTicker = ref(0)
 
 const deletionToast = ref<{ goAway: (delay: number) => void } | null>(null)
 
@@ -163,23 +189,32 @@ const bodyParams = pluckRef<any, any>(useRESTRequestBody(), "body") as Ref<
 >
 
 // The UI representation of the parameters list (has the empty end param)
-const workingParams = ref<FormDataKeyValue[]>([
+const workingParams = ref<WorkingFormDataKeyValue[]>([
   {
-    key: "",
-    value: "",
-    active: true,
-    isFile: false,
+    id: idTicker.value++,
+    entry: {
+      key: "",
+      value: "",
+      active: true,
+      isFile: false,
+    },
   },
 ])
 
 // Rule: Working Params always have last element is always an empty param
 watch(workingParams, (paramsList) => {
-  if (paramsList.length > 0 && paramsList[paramsList.length - 1].key !== "") {
+  if (
+    paramsList.length > 0 &&
+    paramsList[paramsList.length - 1].entry.key !== ""
+  ) {
     workingParams.value.push({
-      key: "",
-      value: "",
-      active: true,
-      isFile: false,
+      id: idTicker.value++,
+      entry: {
+        key: "",
+        value: "",
+        active: true,
+        isFile: false,
+      },
     })
   }
 })
@@ -189,19 +224,37 @@ watch(
   bodyParams,
   (newParamsList) => {
     // Sync should overwrite working params
-    const filteredWorkingParams = workingParams.value.filter(
-      (e) => e.key !== ""
+    const filteredWorkingParams = pipe(
+      workingParams.value,
+      A.filterMap(
+        flow(
+          O.fromPredicate((e) => e.entry.key !== ""),
+          O.map((e) => e.entry)
+        )
+      )
     )
 
     if (!isEqual(newParamsList, filteredWorkingParams)) {
-      workingParams.value = newParamsList
+      workingParams.value = pipe(
+        newParamsList,
+        A.map((x) => ({ id: idTicker.value++, entry: x }))
+      )
     }
   },
   { immediate: true }
 )
 
 watch(workingParams, (newWorkingParams) => {
-  const fixedParams = newWorkingParams.filter((e) => e.key !== "")
+  const fixedParams = pipe(
+    newWorkingParams,
+    A.filterMap(
+      flow(
+        O.fromPredicate((e) => e.entry.key !== ""),
+        O.map((e) => e.entry)
+      )
+    )
+  )
+
   if (!isEqual(bodyParams.value, fixedParams)) {
     bodyParams.value = fixedParams
   }
@@ -209,16 +262,19 @@ watch(workingParams, (newWorkingParams) => {
 
 const addBodyParam = () => {
   workingParams.value.push({
-    key: "",
-    value: "",
-    active: true,
-    isFile: false,
+    id: idTicker.value++,
+    entry: {
+      key: "",
+      value: "",
+      active: true,
+      isFile: false,
+    },
   })
 }
 
-const updateBodyParam = (index: number, param: FormDataKeyValue) => {
+const updateBodyParam = (index: number, entry: FormDataKeyValue) => {
   workingParams.value = workingParams.value.map((h, i) =>
-    i === index ? param : h
+    i === index ? { id: h.id, entry } : h
   )
 }
 
@@ -261,10 +317,13 @@ const clearContent = () => {
   // set params list to the initial state
   workingParams.value = [
     {
-      key: "",
-      value: "",
-      active: true,
-      isFile: false,
+      id: idTicker.value++,
+      entry: {
+        key: "",
+        value: "",
+        active: true,
+        isFile: false,
+      },
     },
   ]
 }

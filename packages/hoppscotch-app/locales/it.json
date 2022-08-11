@@ -9,6 +9,7 @@
     "delete": "Elimina",
     "disconnect": "Disconnetti",
     "dismiss": "Abbandona",
+    "dont_save": "Don't save",
     "download_file": "Scarica file",
     "duplicate": "Duplica",
     "edit": "Modifica",
@@ -44,6 +45,10 @@
     "chat_with_us": "Chatta con noi",
     "contact_us": "Contattaci",
     "copy": "Copia",
+    "copy_user_id": "Copy User Auth Token",
+    "developer_option": "Developer options",
+    "developer_option_description": "Developer tools which helps in development and maintenance of Hoppscotch.",
+    "discord": "Discord",
     "documentation": "Documentazione",
     "github": "GitHub",
     "help": "Aiuto, feedback e documentazione",
@@ -55,6 +60,7 @@
     "keyboard_shortcuts": "Tasti rapidi",
     "name": "Hoppscotch",
     "new_version_found": "Nuova versione trovata. Aggiorna la pagina per aggiornare.",
+    "options": "Options",
     "proxy_privacy_policy": "Informativa sulla privacy del proxy",
     "reload": "Ricarica",
     "search": "Cerca",
@@ -62,6 +68,7 @@
     "shortcuts": "Scorciatoie",
     "spotlight": "Riflettore",
     "status": "Stato",
+    "status_description": "Check the status of the website",
     "terms_and_privacy": "Termini e privacy",
     "twitter": "Twitter",
     "type_a_command_search": "Digita un comando o cerca...",
@@ -75,6 +82,7 @@
     "continue_with_email": "Continua con e-mail",
     "continue_with_github": "Continua con GitHub",
     "continue_with_google": "Continua con Google",
+    "continue_with_microsoft": "Continue with Microsoft",
     "email": "E-mail",
     "logged_out": "Disconnesso",
     "login": "Accedi",
@@ -103,6 +111,7 @@
     "invalid_name": "Si prega di fornire un nome valido per la raccolta",
     "my_collections": "Le Mie Raccolte",
     "name": "La mia nuova raccolta",
+    "name_length_insufficient": "Collection name should be at least 3 characters long",
     "new": "Nuova raccolta",
     "renamed": "Raccolta rinominata",
     "request_in_use": "Request in use",
@@ -122,6 +131,7 @@
     "remove_request": "Sei sicuro di voler eliminare definitivamente questa richiesta?",
     "remove_team": "Sei sicuro di voler eliminare questo team?",
     "remove_telemetry": "Sei sicuro di voler disattivare la telemetria?",
+    "request_change": "Are you sure you want to discard current request, unsaved changes will be lost.",
     "sync": "Vuoi ripristinare il tuo spazio di lavoro con quello del cloud? Questo annullerà le tue modifiche fatte in locale."
   },
   "count": {
@@ -162,6 +172,7 @@
     "add_to_global": "Add to Global",
     "added": "Environment addition",
     "create_new": "Crea un nuovo ambiente",
+    "created": "Environment created",
     "deleted": "Environment deletion",
     "edit": "Modifica ambiente",
     "invalid_name": "Si prega di fornire un nome valido per l'ambiente",
@@ -204,6 +215,7 @@
     "created": "Cartella creata",
     "edit": "Modifica cartella",
     "invalid_name": "Si prega di fornire un nome per la cartella",
+    "name_length_insufficient": "Folder name should be at least 3 characters long",
     "new": "Nuova cartella",
     "renamed": "Cartella rinominata"
   },
@@ -213,7 +225,6 @@
     "subscriptions": "Sottoscrizioni"
   },
   "header": {
-    "account": "Account",
     "install_pwa": "Installa l'applicazione",
     "login": "Accedi",
     "save_workspace": "Salva il mio spazio di lavoro"
@@ -231,6 +242,7 @@
     "tests": "Scrivi uno script di test per automatizzare il debug."
   },
   "hide": {
+    "collection": "Collapse Collection Panel",
     "more": "Nascondi di più",
     "preview": "Nascondi anteprima",
     "sidebar": "Nascondi barra laterale"
@@ -257,7 +269,10 @@
     "title": "Importa"
   },
   "layout": {
+    "collapse_collection": "Collapse or Expand Collections",
+    "collapse_sidebar": "Collapse or Expand the sidebar",
     "column": "Disposizione verticale",
+    "name": "Layout",
     "row": "Disposizione orizzontale",
     "zen_mode": "Modalità zen"
   },
@@ -325,8 +340,13 @@
     "invalid_name": "Si prega di fornire un nome per la richiesta",
     "method": "Metodo",
     "name": "Nome richiesta",
+    "new": "New Request",
+    "override": "Override",
+    "override_help": "Set <xmp>Content-Type</xmp> in Headers",
+    "overriden": "Overridden",
     "parameter_list": "Parametri della query",
     "parameters": "Parametri",
+    "path": "Percorso",
     "payload": "Contenuto (Payload)",
     "query": "Query",
     "raw_body": "Corpo della richiesta non formattato",
@@ -336,6 +356,7 @@
     "save_as": "Salva come",
     "saved": "Richiesta salvata",
     "share": "Condividi",
+    "share_description": "Share Hoppscotch with your friends",
     "title": "Richiesta",
     "type": "Tipo di richiesta",
     "url": "URL",
@@ -375,6 +396,7 @@
     "extension_version": "Versione dell'estensione",
     "extensions": "Estensioni",
     "extensions_use_toggle": "Utilizza l'estensione del browser per inviare richieste (se presente)",
+    "follow": "Follow Us",
     "font_size": "Dimensione dei caratteri",
     "font_size_large": "Grande",
     "font_size_medium": "Medio",
@@ -438,7 +460,6 @@
       "head_method": "Seleziona il metodo HEAD",
       "method": "Metodo",
       "next_method": "Seleziona il metodo successivo",
-      "path": "Percorso",
       "post_method": "Seleziona il metodo POST",
       "previous_method": "Seleziona il metodo precedente",
       "put_method": "Seleziona il metodo PUT",
@@ -457,6 +478,7 @@
   },
   "show": {
     "code": "Mostra il codice",
+    "collection": "Expand Collection Panel",
     "more": "Mostra di più",
     "sidebar": "Mostra la barra laterale"
   },
@@ -489,7 +511,7 @@
     "download_started": "Download avviato",
     "enabled": "Abilitato",
     "file_imported": "File importato",
-    "finished_in": "Finito in {duration}ms",
+    "finished_in": "Finito in {duration} ms",
     "history_deleted": "Cronologia cancellata",
     "linewrap": "Testo a capo",
     "loading": "Caricamento in corso...",
@@ -503,6 +525,7 @@
     "community": "Fai domande e aiuta gli altri",
     "documentation": "Maggiori informazioni su Hoppscotch",
     "forum": "Fai domande e ottieni risposte",
+    "github": "Follow us on Github",
     "shortcuts": "Naviga nella app più velocemente",
     "team": "Mettiti in contatto con il team",
     "title": "Supporto",
@@ -567,6 +590,7 @@
     "new_name": "Il mio nuovo team",
     "no_access": "Non sei autorizzato a modificare queste raccolte",
     "no_invite_found": "Invito non trovato. Contatta il proprietario del team.",
+    "not_found": "Team not found. Contact your team owner.",
     "not_valid_viewer": "Non sei autorizzato a visualizzare. Contatta il proprietario del team.",
     "pending_invites": "Inviti pendenti",
     "permissions": "Permessi",

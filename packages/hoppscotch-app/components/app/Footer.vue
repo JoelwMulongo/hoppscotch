@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-between">
+    <div class="flex justify-between bg-primary">
       <div class="flex">
         <ButtonSecondary
           v-tippy="{ theme: 'tooltip' }"
@@ -144,7 +144,10 @@
               blank
               @click.native="options.tippy().hide()"
             />
-            <div class="flex px-4 py-2 opacity-50">
+            <div
+              class="flex px-4 py-2 opacity-50"
+              @dblclick="showDeveloperOptionModal()"
+            >
               {{ `${t("app.name")} v${$config.clientVersion}` }}
             </div>
           </div>
@@ -189,7 +192,10 @@
     </div>
     <AppShortcuts :show="showShortcuts" @close="showShortcuts = false" />
     <AppShare :show="showShare" @hide-modal="showShare = false" />
-    <AppPowerSearch :show="showSearch" @hide-modal="showSearch = false" />
+    <AppDeveloperOptions
+      :show="showDeveloperOptions"
+      @hide-modal="showDeveloperOptions = false"
+    />
   </div>
 </template>
 
@@ -198,12 +204,13 @@ import { ref, watch } from "@nuxtjs/composition-api"
 import { defineActionHandler } from "~/helpers/actions"
 import { showChat } from "~/helpers/support"
 import { useSetting } from "~/newstore/settings"
-import { useI18n } from "~/helpers/utils/composables"
+import { useI18n, useReadonlyStream } from "~/helpers/utils/composables"
+import { currentUser$ } from "~/helpers/fb/auth"
 
 const t = useI18n()
 const showShortcuts = ref(false)
 const showShare = ref(false)
-const showSearch = ref(false)
+const showDeveloperOptions = ref(false)
 
 defineActionHandler("flyouts.keybinds.toggle", () => {
   showShortcuts.value = !showShortcuts.value
@@ -213,10 +220,6 @@ defineActionHandler("modals.share.toggle", () => {
   showShare.value = !showShare.value
 })
 
-defineActionHandler("modals.search.toggle", () => {
-  showSearch.value = !showSearch.value
-})
-
 const EXPAND_NAVIGATION = useSetting("EXPAND_NAVIGATION")
 const SIDEBAR = useSetting("SIDEBAR")
 const ZEN_MODE = useSetting("ZEN_MODE")
@@ -224,6 +227,8 @@ const COLUMN_LAYOUT = useSetting("COLUMN_LAYOUT")
 const SIDEBAR_ON_LEFT = useSetting("SIDEBAR_ON_LEFT")
 
 const navigatorShare = !!navigator.share
+
+const currentUser = useReadonlyStream(currentUser$, null)
 
 watch(
   () => ZEN_MODE.value,
@@ -249,6 +254,13 @@ const nativeShare = () => {
 
 const chatWithUs = () => {
   showChat()
+}
+
+const showDeveloperOptionModal = () => {
+  if (currentUser.value) {
+    showDeveloperOptions.value = true
+    options.value.tippy().hide()
+  }
 }
 
 // Template refs

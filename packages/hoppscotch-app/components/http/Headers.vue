@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col flex-1">
     <div
-      class="sticky z-10 flex items-center justify-between pl-4 border-b bg-primary border-dividerLight top-upperSecondaryStickyFold"
+      class="sticky z-10 flex items-center justify-between pl-4 border-b bg-primary border-dividerLight top-upperMobileSecondaryStickyFold sm:top-upperSecondaryStickyFold"
     >
       <label class="font-semibold text-secondaryLight">
         {{ t("request.header_list") }}
@@ -38,18 +38,38 @@
     </div>
     <div v-if="bulkMode" ref="bulkEditor" class="flex flex-col flex-1"></div>
     <div v-else>
-      <div
-        v-for="(header, index) in workingHeaders"
-        :key="`header-${header.id}-${index}`"
-        class="flex border-b divide-x divide-dividerLight border-dividerLight"
+      <draggable
+        v-model="workingHeaders"
+        animation="250"
+        handle=".draggable-handle"
+        draggable=".draggable-content"
+        ghost-class="cursor-move"
+        chosen-class="bg-primaryLight"
+        drag-class="cursor-grabbing"
       >
-        <SmartAutoComplete
-          :placeholder="`${t('count.header', { count: index + 1 })}`"
-          :source="commonHeaders"
-          :spellcheck="false"
-          :value="header.key"
-          autofocus
-          styles="
+        <div
+          v-for="(header, index) in workingHeaders"
+          :key="`header-${header.id}-${index}`"
+          class="flex border-b divide-x divide-dividerLight border-dividerLight draggable-content group"
+        >
+          <span>
+            <ButtonSecondary
+              svg="grip-vertical"
+              class="cursor-auto text-primary hover:text-primary"
+              :class="{
+                'draggable-handle group-hover:text-secondaryLight !cursor-grab':
+                  index !== workingHeaders?.length - 1,
+              }"
+              tabindex="-1"
+            />
+          </span>
+          <SmartAutoComplete
+            :placeholder="`${t('count.header', { count: index + 1 })}`"
+            :source="commonHeaders"
+            :spellcheck="false"
+            :value="header.key"
+            autofocus
+            styles="
             bg-transparent
             flex
             flex-1
@@ -57,66 +77,108 @@
             px-4
             truncate
           "
-          class="flex-1 !flex"
-          @input="
-            updateHeader(index, {
-              id: header.id,
-              key: $event,
-              value: header.value,
-              active: header.active,
-            })
-          "
-        />
-        <SmartEnvInput
-          v-model="header.value"
-          :placeholder="`${t('count.value', { count: index + 1 })}`"
-          @change="
-            updateHeader(index, {
-              id: header.id,
-              key: header.key,
-              value: $event,
-              active: header.active,
-            })
-          "
-        />
-        <span>
-          <ButtonSecondary
-            v-tippy="{ theme: 'tooltip' }"
-            :title="
-              header.hasOwnProperty('active')
-                ? header.active
-                  ? t('action.turn_off')
-                  : t('action.turn_on')
-                : t('action.turn_off')
-            "
-            :svg="
-              header.hasOwnProperty('active')
-                ? header.active
-                  ? 'check-circle'
-                  : 'circle'
-                : 'check-circle'
-            "
-            color="green"
-            @click.native="
+            class="flex-1 !flex"
+            @input="
               updateHeader(index, {
                 id: header.id,
-                key: header.key,
+                key: $event,
                 value: header.value,
-                active: !header.active,
+                active: header.active,
               })
             "
           />
-        </span>
-        <span>
-          <ButtonSecondary
-            v-tippy="{ theme: 'tooltip' }"
-            :title="t('action.remove')"
-            svg="trash"
-            color="red"
-            @click.native="deleteHeader(index)"
+          <SmartEnvInput
+            v-model="header.value"
+            :placeholder="`${t('count.value', { count: index + 1 })}`"
+            @change="
+              updateHeader(index, {
+                id: header.id,
+                key: header.key,
+                value: $event,
+                active: header.active,
+              })
+            "
           />
-        </span>
-      </div>
+          <span>
+            <ButtonSecondary
+              v-tippy="{ theme: 'tooltip' }"
+              :title="
+                header.hasOwnProperty('active')
+                  ? header.active
+                    ? t('action.turn_off')
+                    : t('action.turn_on')
+                  : t('action.turn_off')
+              "
+              :svg="
+                header.hasOwnProperty('active')
+                  ? header.active
+                    ? 'check-circle'
+                    : 'circle'
+                  : 'check-circle'
+              "
+              color="green"
+              @click.native="
+                updateHeader(index, {
+                  id: header.id,
+                  key: header.key,
+                  value: header.value,
+                  active: !header.active,
+                })
+              "
+            />
+          </span>
+          <span>
+            <ButtonSecondary
+              v-tippy="{ theme: 'tooltip' }"
+              :title="t('action.remove')"
+              svg="trash"
+              color="red"
+              @click.native="deleteHeader(index)"
+            />
+          </span>
+        </div>
+        <div
+          v-for="(header, index) in computedHeaders"
+          :key="`header-${index}`"
+          class="flex border-b divide-x divide-dividerLight border-dividerLight draggable-content group"
+        >
+          <span>
+            <ButtonSecondary
+              svg="lock"
+              class="opacity-25 cursor-auto text-secondaryLight bg-divider"
+              tabindex="-1"
+            />
+          </span>
+          <SmartEnvInput
+            v-model="header.header.key"
+            :placeholder="`${t('count.value', { count: index + 1 })}`"
+            readonly
+          />
+          <SmartEnvInput
+            :value="mask(header)"
+            :placeholder="`${t('count.value', { count: index + 1 })}`"
+            readonly
+          />
+          <span>
+            <ButtonSecondary
+              v-if="header.source === 'auth'"
+              :svg="masking ? 'eye' : 'eye-off'"
+              @click.native="toggleMask()"
+            />
+            <ButtonSecondary
+              v-else
+              svg="arrow-up-right"
+              class="cursor-auto text-primary hover:text-primary"
+            />
+          </span>
+          <span>
+            <ButtonSecondary
+              svg="arrow-up-right"
+              @click.native="changeTab(header.source)"
+            />
+          </span>
+        </div>
+      </draggable>
       <div
         v-if="workingHeaders.length === 0"
         class="flex flex-col items-center justify-center p-4 text-secondaryLight"
@@ -127,9 +189,7 @@
           class="inline-flex flex-col object-contain object-center w-16 h-16 my-4"
           :alt="`${t('empty.headers')}`"
         />
-        <span class="pb-4 text-center">
-          {{ t("empty.headers") }}
-        </span>
+        <span class="pb-4 text-center">{{ t("empty.headers") }}</span>
         <ButtonSecondary
           filled
           :label="`${t('add.new')}`"
@@ -143,7 +203,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref, watch } from "@nuxtjs/composition-api"
+import { computed, Ref, ref, watch } from "@nuxtjs/composition-api"
 import isEqual from "lodash/isEqual"
 import {
   HoppRESTHeader,
@@ -157,13 +217,30 @@ import * as E from "fp-ts/Either"
 import * as O from "fp-ts/Option"
 import * as A from "fp-ts/Array"
 import cloneDeep from "lodash/cloneDeep"
+import draggable from "vuedraggable"
+import { RequestOptionTabs } from "./RequestOptions.vue"
 import { useCodemirror } from "~/helpers/editor/codemirror"
-import { restHeaders$, setRESTHeaders } from "~/newstore/RESTSession"
+import {
+  getRESTRequest,
+  restHeaders$,
+  restRequest$,
+  setRESTHeaders,
+} from "~/newstore/RESTSession"
 import { commonHeaders } from "~/helpers/headers"
-import { useI18n, useStream, useToast } from "~/helpers/utils/composables"
+import {
+  useI18n,
+  useReadonlyStream,
+  useStream,
+  useToast,
+} from "~/helpers/utils/composables"
 import linter from "~/helpers/editor/linting/rawKeyValue"
 import { throwError } from "~/helpers/functional/error"
 import { objRemoveKey } from "~/helpers/functional/object"
+import {
+  ComputedHeader,
+  getComputedHeaders,
+} from "~/helpers/utils/EffectiveURL"
+import { aggregateEnvs$, getAggregateEnvs } from "~/newstore/environments"
 
 const t = useI18n()
 const toast = useToast()
@@ -175,6 +252,10 @@ const bulkHeaders = ref("")
 const bulkEditor = ref<any | null>(null)
 
 const deletionToast = ref<{ goAway: (delay: number) => void } | null>(null)
+
+const emit = defineEmits<{
+  (e: "change-tab", value: RequestOptionTabs): void
+}>()
 
 useCodemirror(bulkEditor, bulkHeaders, {
   extendedEditorConfig: {
@@ -358,5 +439,29 @@ const clearContent = () => {
   ]
 
   bulkHeaders.value = ""
+}
+
+const restRequest = useReadonlyStream(restRequest$, getRESTRequest())
+const aggregateEnvs = useReadonlyStream(aggregateEnvs$, getAggregateEnvs())
+
+const computedHeaders = computed(() =>
+  getComputedHeaders(restRequest.value, aggregateEnvs.value)
+)
+
+const masking = ref(true)
+
+const toggleMask = () => {
+  masking.value = !masking.value
+}
+
+const mask = (header: ComputedHeader) => {
+  if (header.source === "auth" && masking.value)
+    return header.header.value.replace(/\S/gi, "*")
+  return header.header.value
+}
+
+const changeTab = (tab: ComputedHeader["source"]) => {
+  if (tab === "auth") emit("change-tab", "authorization")
+  else emit("change-tab", "bodyParams")
 }
 </script>

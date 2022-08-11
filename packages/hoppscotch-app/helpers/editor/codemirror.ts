@@ -12,7 +12,7 @@ import {
   EditorSelection,
 } from "@codemirror/state"
 import { Language, LanguageSupport } from "@codemirror/language"
-import { defaultKeymap } from "@codemirror/commands"
+import { defaultKeymap, indentLess, insertTab } from "@codemirror/commands"
 import { Completion, autocompletion } from "@codemirror/autocomplete"
 import { linter } from "@codemirror/lint"
 
@@ -25,10 +25,9 @@ import {
 } from "@nuxtjs/composition-api"
 
 import { javascriptLanguage } from "@codemirror/lang-javascript"
+import { xmlLanguage } from "@codemirror/lang-xml"
 import { jsonLanguage } from "@codemirror/lang-json"
 import { GQLLanguage } from "@hoppscotch/codemirror-lang-graphql"
-import { pipe } from "fp-ts/function"
-import * as O from "fp-ts/Option"
 import { StreamLanguage } from "@codemirror/stream-parser"
 import { html } from "@codemirror/legacy-modes/mode/xml"
 import { shell } from "@codemirror/legacy-modes/mode/shell"
@@ -94,8 +93,10 @@ const hoppCompleterExt = (completer: Completer): Extension => {
   })
 }
 
-const hoppLinterExt = (hoppLinter: LinterDefinition): Extension => {
+const hoppLinterExt = (hoppLinter: LinterDefinition | undefined): Extension => {
   return linter(async (view) => {
+    if (!hoppLinter) return []
+
     // Requires full document scan, hence expensive on big files, force disable on big files ?
     const linterResult = await hoppLinter(
       view.state.doc.toJSON().join(view.state.lineBreak)
@@ -117,16 +118,16 @@ const hoppLinterExt = (hoppLinter: LinterDefinition): Extension => {
 }
 
 const hoppLang = (
-  language: Language,
+  language: Language | undefined,
   linter?: LinterDefinition | undefined,
   completer?: Completer | undefined
-) => {
+): Extension | LanguageSupport => {
   const exts: Extension[] = []
 
-  if (linter) exts.push(hoppLinterExt(linter))
+  exts.push(hoppLinterExt(linter))
   if (completer) exts.push(hoppCompleterExt(completer))
 
-  return new LanguageSupport(language, exts)
+  return language ? new LanguageSupport(language, exts) : exts
 }
 
 const getLanguage = (langMime: string): Language | null => {
@@ -136,6 +137,8 @@ const getLanguage = (langMime: string): Language | null => {
     return javascriptLanguage
   } else if (langMime === "graphql") {
     return GQLLanguage
+  } else if (langMime === "application/xml") {
+    return xmlLanguage
   } else if (langMime === "htmlmixed") {
     return StreamLanguage.define(html)
   } else if (langMime === "application/x-sh") {
@@ -152,12 +155,7 @@ const getEditorLanguage = (
   langMime: string,
   linter: LinterDefinition | undefined,
   completer: Completer | undefined
-): Extension =>
-  pipe(
-    O.fromNullable(getLanguage(langMime)),
-    O.map((lang) => hoppLang(lang, linter, completer)),
-    O.getOrElseW(() => [])
-  )
+): Extension => hoppLang(getLanguage(langMime) ?? undefined, linter, completer)
 
 export function useCodemirror(
   el: Ref<any | null>,
@@ -221,6 +219,11 @@ export function useCodemirror(
           }
         }
       ),
+      EditorView.updateListener.of((update) => {
+        if (options.extendedEditorConfig.readOnly) {
+          update.view.contentDOM.inputMode = "none"
+        }
+      }),
       EditorState.changeFilter.of(() => !options.extendedEditorConfig.readOnly),
       placeholderConfig.of(
         placeholder(options.extendedEditorConfig.placeholder ?? "")
@@ -237,7 +240,19 @@ export function useCodemirror(
           ? [EditorView.lineWrapping]
           : []
       ),
-      keymap.of(defaultKeymap),
+      keymap.of([
+        ...defaultKeymap,
+        {
+          key: "Tab",
+          preventDefault: true,
+          run: insertTab,
+        },
+        {
+          key: "Shift-Tab",
+          preventDefault: true,
+          run: indentLess,
+        },
+      ]),
     ]
 
     if (environmentTooltip) extensions.push(environmentTooltip.extension)
@@ -259,7 +274,8 @@ export function useCodemirror(
 
   watch(el, () => {
     if (el.value) {
-      if (!view.value) initView(el.value)
+      if (view.value) view.value.destroy()
+      initView(el.value)
     } else {
       view.value?.destroy()
       view.value = undefined

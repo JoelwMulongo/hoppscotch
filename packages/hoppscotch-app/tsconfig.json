@@ -8,7 +8,9 @@
     "esModuleInterop": true,
     "allowJs": true,
     "sourceMap": true,
+    "skipLibCheck": true,
     "strict": true,
+    "jsx": "preserve",
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
@@ -16,6 +18,7 @@
       "@/*": ["./*"]
     },
     "types": [
+      "@types/jest",
       "@types/node",
       "@nuxt/types",
       "@nuxtjs/i18n",
@@ -27,6 +30,7 @@
   },
   "exclude": ["node_modules", ".nuxt", "dist"],
   "vueCompilerOptions": {
+    "target": 2,
     "experimentalCompatMode": 2
   }
 }

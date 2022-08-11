@@ -1,48 +1,72 @@
 <template>
-  <SmartTabs
-    class="h-full !overflow-hidden"
-    styles="sticky bg-primary top-0 z-10 border-b border-dividerLight !overflow-visible"
-  >
+  <SmartTabs v-model="currentTab">
     <SmartTab
-      id="websocket"
-      :label="$t('tab.websocket')"
-      :selected="true"
-      style="height: calc(100% - var(--sidebar-primary-sticky-fold))"
+      v-for="{ target, title } in REALTIME_NAVIGATION"
+      :id="target"
+      :key="target"
+      :label="title"
     >
-      <RealtimeWebsocket />
-    </SmartTab>
-    <SmartTab
-      id="sse"
-      :label="$t('tab.sse')"
-      style="height: calc(100% - var(--sidebar-primary-sticky-fold))"
-    >
-      <RealtimeSse />
-    </SmartTab>
-    <SmartTab
-      id="socketio"
-      :label="$t('tab.socketio')"
-      style="height: calc(100% - var(--sidebar-primary-sticky-fold))"
-    >
-      <RealtimeSocketio />
-    </SmartTab>
-    <SmartTab
-      id="mqtt"
-      :label="$t('tab.mqtt')"
-      style="height: calc(100% - var(--sidebar-primary-sticky-fold))"
-    >
-      <RealtimeMqtt />
+      <NuxtChild />
     </SmartTab>
   </SmartTabs>
 </template>
 
-<script>
-import { defineComponent } from "@nuxtjs/composition-api"
+<script setup lang="ts">
+import { watch, ref, useRouter, useRoute } from "@nuxtjs/composition-api"
+import { useI18n, useI18nPathInfo } from "~/helpers/utils/composables"
 
-export default defineComponent({
-  head() {
-    return {
-      title: `${this.$t("navigation.realtime")} • Hoppscotch`,
-    }
+const t = useI18n()
+const { localePath, getRouteBaseName } = useI18nPathInfo()
+const router = useRouter()
+const route = useRoute()
+
+const REALTIME_NAVIGATION = [
+  {
+    target: "websocket",
+    title: t("tab.websocket"),
   },
+  {
+    target: "sse",
+    title: t("tab.sse"),
+  },
+  {
+    target: "socketio",
+    title: t("tab.socketio"),
+  },
+  {
+    target: "mqtt",
+    title: t("tab.mqtt"),
+  },
+] as const
+
+type RealtimeNavTab = typeof REALTIME_NAVIGATION[number]["target"]
+
+const currentTab = ref<RealtimeNavTab>("websocket")
+
+// Update the router when the tab is updated
+watch(currentTab, (newTab) => {
+  router.push(localePath(`/realtime/${newTab}`))
 })
+
+// Update the tab when router is upgrad
+watch(
+  route,
+  (updateRoute) => {
+    const path = getRouteBaseName(updateRoute)
+
+    if (path.endsWith("realtime")) {
+      router.replace(localePath(`/realtime/websocket`))
+      return
+    }
+
+    const destination: string | undefined = path.split("realtime-")[1]
+
+    const target = REALTIME_NAVIGATION.find(
+      ({ target }) => target === destination
+    )?.target
+
+    if (target) currentTab.value = target
+  },
+  { immediate: true }
+)
 </script>

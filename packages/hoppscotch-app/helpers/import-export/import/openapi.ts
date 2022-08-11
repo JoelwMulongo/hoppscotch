@@ -27,7 +27,7 @@ import * as RA from "fp-ts/ReadonlyArray"
 import { step } from "../steps"
 import { defineImporter, IMPORTER_INVALID_FILE_FORMAT } from "."
 
-const OPENAPI_DEREF_ERROR = "openapi/deref_error" as const
+export const OPENAPI_DEREF_ERROR = "openapi/deref_error" as const
 
 // TODO: URL Import Support
 
@@ -519,7 +519,7 @@ const convertPathToHoppReqs = (
   pathObj: OpenAPIPathInfoType
 ) =>
   pipe(
-    ["get", "head", "post", "put", "delete", "options"] as const,
+    ["get", "head", "post", "put", "delete", "options", "patch"] as const,
 
     // Filter and map out path info
     RA.filterMap(
@@ -538,10 +538,10 @@ const convertPathToHoppReqs = (
 
         // We don't need to worry about reference types as the Dereferencing pass should remove them
         params: parseOpenAPIParams(
-          (info.parameters as OpenAPIParamsType[]) ?? []
+          (info.parameters as OpenAPIParamsType[] | undefined) ?? []
         ),
         headers: parseOpenAPIHeaders(
-          (info.parameters as OpenAPIParamsType[]) ?? []
+          (info.parameters as OpenAPIParamsType[] | undefined) ?? []
         ),
 
         auth: parseOpenAPIAuth(doc, info),
@@ -586,7 +586,9 @@ const parseOpenAPIDocContent = (str: string) =>
   )
 
 export default defineImporter({
+  id: "openapi",
   name: "import.from_openapi",
+  applicableTo: ["my-collections", "team-collections", "url-import"],
   icon: "file",
   steps: [
     step({
@@ -603,7 +605,6 @@ export default defineImporter({
       fileContent,
       parseOpenAPIDocContent,
       TE.fromOption(() => IMPORTER_INVALID_FILE_FORMAT),
-
       // Try validating, else the importer is invalid file format
       TE.chainW((obj) =>
         pipe(
@@ -613,7 +614,6 @@ export default defineImporter({
           )
         )
       ),
-
       // Deference the references
       TE.chainW((obj) =>
         pipe(
@@ -623,7 +623,6 @@ export default defineImporter({
           )
         )
       ),
-
       TE.chainW(convertOpenApiDocToHopp)
     ),
 })

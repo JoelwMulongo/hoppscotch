@@ -12,8 +12,9 @@ export const options = {
   keywords:
     "hoppscotch, hopp scotch, hoppscotch online, hoppscotch app, postwoman, postwoman chrome, postwoman online, postwoman for mac, postwoman app, postwoman for windows, postwoman google chrome, postwoman chrome app, get postwoman, postwoman web, postwoman android, postwoman app for chrome, postwoman mobile app, postwoman web app, api, request, testing, tool, rest, websocket, sse, graphql, socketio",
   loading: {
-    color: "var(--divider-light-color)",
+    color: "var(--divider-dark-color)",
     background: "var(--primary-color)",
+    accent: "var(--accent-color)",
   },
   app: {
     background: "#202124",
@@ -81,7 +82,7 @@ export default {
 
   // Customize the progress-bar color (https://nuxtjs.org/api/configuration-loading/#customizing-the-progress-bar)
   loading: {
-    color: options.loading.color,
+    color: options.loading.accent,
     continuous: true,
   },
 
@@ -131,7 +132,7 @@ export default {
     // https://github.com/nuxt/typescript
     ["@nuxt/typescript-build", { typeCheck: false }],
     // https://github.com/nuxt-community/dotenv-module
-    "@nuxtjs/dotenv",
+    ["@nuxtjs/dotenv", { systemvars: true }],
     // https://github.com/nuxt-community/composition-api
     "@nuxtjs/composition-api/module",
     "~/modules/emit-volar-types.ts",
@@ -338,6 +339,8 @@ export default {
     APP_ID: process.env.APP_ID,
     MEASUREMENT_ID: process.env.MEASUREMENT_ID,
     BASE_URL: process.env.BASE_URL,
+    BACKEND_GQL_URL: process.env.BACKEND_GQL_URL,
+    BACKEND_WS_URL: process.env.BACKEND_WS_URL,
   },
 
   publicRuntimeConfig: {

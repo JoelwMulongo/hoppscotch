@@ -1,10 +1,13 @@
 <template>
   <div class="flex flex-col flex-1 h-full">
-    <SmartTabs styles="sticky bg-primary top-upperPrimaryStickyFold z-10">
+    <SmartTabs
+      v-model="selectedOptionTab"
+      styles="sticky bg-primary top-upperPrimaryStickyFold z-10"
+      render-inactive-tabs
+    >
       <SmartTab
         :id="'query'"
         :label="`${t('tab.query')}`"
-        :selected="true"
         :indicator="gqlQueryString && gqlQueryString.length > 0 ? true : false"
       >
         <div
@@ -64,7 +67,6 @@
         </div>
         <div ref="queryEditor" class="flex flex-col flex-1"></div>
       </SmartTab>
-
       <SmartTab
         :id="'variables'"
         :label="`${t('tab.variables')}`"
@@ -107,7 +109,6 @@
         </div>
         <div ref="variableEditor" class="flex flex-col flex-1"></div>
       </SmartTab>
-
       <SmartTab
         :id="'headers'"
         :label="`${t('tab.headers')}`"
@@ -155,18 +156,38 @@
           class="flex flex-col flex-1"
         ></div>
         <div v-else>
-          <div
-            v-for="(header, index) in workingHeaders"
-            :key="`header-${header.id}-${index}`"
-            class="flex border-b divide-x divide-dividerLight border-dividerLight"
+          <draggable
+            v-model="workingHeaders"
+            animation="250"
+            handle=".draggable-handle"
+            draggable=".draggable-content"
+            ghost-class="cursor-move"
+            chosen-class="bg-primaryLight"
+            drag-class="cursor-grabbing"
           >
-            <SmartAutoComplete
-              :placeholder="`${t('count.header', { count: index + 1 })}`"
-              :source="commonHeaders"
-              :spellcheck="false"
-              :value="header.key"
-              autofocus
-              styles="
+            <div
+              v-for="(header, index) in workingHeaders"
+              :key="`header-${header.id}-${index}`"
+              class="flex border-b divide-x divide-dividerLight border-dividerLight draggable-content group"
+            >
+              <span>
+                <ButtonSecondary
+                  svg="grip-vertical"
+                  class="cursor-auto text-primary hover:text-primary"
+                  :class="{
+                    'draggable-handle group-hover:text-secondaryLight !cursor-grab':
+                      index !== workingHeaders?.length - 1,
+                  }"
+                  tabindex="-1"
+                />
+              </span>
+              <SmartAutoComplete
+                :placeholder="`${t('count.header', { count: index + 1 })}`"
+                :source="commonHeaders"
+                :spellcheck="false"
+                :value="header.key"
+                autofocus
+                styles="
                 bg-transparent
                 flex
                 flex-1
@@ -174,69 +195,70 @@
                 px-4
                 truncate
               "
-              class="flex-1 !flex"
-              @input="
-                updateHeader(index, {
-                  id: header.id,
-                  key: $event,
-                  value: header.value,
-                  active: header.active,
-                })
-              "
-            />
-            <input
-              class="flex flex-1 px-4 py-2 bg-transparent"
-              :placeholder="`${t('count.value', { count: index + 1 })}`"
-              :name="`value ${String(index)}`"
-              :value="header.value"
-              autofocus
-              @change="
-                updateHeader(index, {
-                  id: header.id,
-                  key: header.key,
-                  value: $event.target.value,
-                  active: header.active,
-                })
-              "
-            />
-            <span>
-              <ButtonSecondary
-                v-tippy="{ theme: 'tooltip' }"
-                :title="
-                  header.hasOwnProperty('active')
-                    ? header.active
-                      ? t('action.turn_off')
-                      : t('action.turn_on')
-                    : t('action.turn_off')
-                "
-                :svg="
-                  header.hasOwnProperty('active')
-                    ? header.active
-                      ? 'check-circle'
-                      : 'circle'
-                    : 'check-circle'
-                "
-                color="green"
-                @click.native="
+                class="flex-1 !flex"
+                @input="
                   updateHeader(index, {
                     id: header.id,
-                    key: header.key,
+                    key: $event,
                     value: header.value,
-                    active: !header.active,
+                    active: header.active,
                   })
                 "
               />
-            </span>
-            <span>
-              <ButtonSecondary
-                v-tippy="{ theme: 'tooltip' }"
-                :title="t('action.remove')"
-                svg="trash"
-                color="red"
-                @click.native="deleteHeader(index)"
+              <input
+                class="flex flex-1 px-4 py-2 bg-transparent"
+                :placeholder="`${t('count.value', { count: index + 1 })}`"
+                :name="`value ${String(index)}`"
+                :value="header.value"
+                autofocus
+                @change="
+                  updateHeader(index, {
+                    id: header.id,
+                    key: header.key,
+                    value: $event.target.value,
+                    active: header.active,
+                  })
+                "
               />
-            </span>
-          </div>
+              <span>
+                <ButtonSecondary
+                  v-tippy="{ theme: 'tooltip' }"
+                  :title="
+                    header.hasOwnProperty('active')
+                      ? header.active
+                        ? t('action.turn_off')
+                        : t('action.turn_on')
+                      : t('action.turn_off')
+                  "
+                  :svg="
+                    header.hasOwnProperty('active')
+                      ? header.active
+                        ? 'check-circle'
+                        : 'circle'
+                      : 'check-circle'
+                  "
+                  color="green"
+                  @click.native="
+                    updateHeader(index, {
+                      id: header.id,
+                      key: header.key,
+                      value: header.value,
+                      active: !header.active,
+                    })
+                  "
+                />
+              </span>
+              <span>
+                <ButtonSecondary
+                  v-tippy="{ theme: 'tooltip' }"
+                  :title="t('action.remove')"
+                  svg="trash"
+                  color="red"
+                  @click.native="deleteHeader(index)"
+                />
+              </span>
+            </div>
+          </draggable>
           <div
             v-if="workingHeaders.length === 0"
             class="flex flex-col items-center justify-center p-4 text-secondaryLight"
@@ -259,6 +281,9 @@
             />
           </div>
         </div>
+      </SmartTab>
+      <SmartTab :id="'authorization'" :label="`${t('tab.authorization')}`">
+        <GraphqlAuthorization />
       </SmartTab>
     </SmartTabs>
     <CollectionsSaveRequest
@@ -285,8 +310,10 @@ import {
   parseRawKeyValueEntriesE,
   RawKeyValueEntry,
 } from "@hoppscotch/data"
+import draggable from "vuedraggable"
 import isEqual from "lodash/isEqual"
 import cloneDeep from "lodash/cloneDeep"
+import { refAutoReset } from "@vueuse/core"
 import { copyToClipboard } from "~/helpers/utils/clipboard"
 import {
   useNuxt,
@@ -296,11 +323,13 @@ import {
   useToast,
 } from "~/helpers/utils/composables"
 import {
+  gqlAuth$,
   gqlHeaders$,
   gqlQuery$,
   gqlResponse$,
   gqlURL$,
   gqlVariables$,
+  setGQLAuth,
   setGQLHeaders,
   setGQLQuery,
   setGQLResponse,
@@ -318,6 +347,10 @@ import queryCompleter from "~/helpers/editor/completion/gqlQuery"
 import { defineActionHandler } from "~/helpers/actions"
 import { getPlatformSpecialKey as getSpecialKey } from "~/helpers/platformutils"
 import { objRemoveKey } from "~/helpers/functional/object"
+
+type OptionTabs = "query" | "headers" | "variables" | "authorization"
+
+const selectedOptionTab = ref<OptionTabs>("query")
 
 const t = useI18n()
 
@@ -352,6 +385,12 @@ useCodemirror(bulkEditor, bulkHeaders, {
 
 // The functional headers list (the headers actually in the system)
 const headers = useStream(gqlHeaders$, [], setGQLHeaders) as Ref<GQLHeader[]>
+
+const auth = useStream(
+  gqlAuth$,
+  { authType: "none", authActive: true },
+  setGQLAuth
+)
 
 // The UI representation of the headers list (has the empty end header)
 const workingHeaders = ref<Array<GQLHeader & { id: number }>>([
@@ -575,10 +614,13 @@ useCodemirror(queryEditor, gqlQueryString, {
   environmentHighlights: false,
 })
 
-const copyQueryIcon = ref("copy")
-const copyVariablesIcon = ref("copy")
-const prettifyQueryIcon = ref("wand")
-const prettifyVariablesIcon = ref("wand")
+const copyQueryIcon = refAutoReset<"copy" | "check">("copy", 1000)
+const copyVariablesIcon = refAutoReset<"copy" | "check">("copy", 1000)
+const prettifyQueryIcon = refAutoReset<"wand" | "check" | "info">("wand", 1000)
+const prettifyVariablesIcon = refAutoReset<"wand" | "check" | "info">(
+  "wand",
+  1000
+)
 
 const showSaveRequestModal = ref(false)
 
@@ -586,7 +628,6 @@ const copyQuery = () => {
   copyToClipboard(gqlQueryString.value)
   copyQueryIcon.value = "check"
   toast.success(`${t("state.copied_to_clipboard")}`)
-  setTimeout(() => (copyQueryIcon.value = "copy"), 1000)
 }
 
 const response = useStream(gqlResponse$, "", setGQLResponse)
@@ -602,12 +643,14 @@ const runQuery = async () => {
     const runHeaders = clone(headers.value)
     const runQuery = clone(gqlQueryString.value)
     const runVariables = clone(variableString.value)
+    const runAuth = clone(auth.value)
 
     const responseText = await props.conn.runQuery(
       runURL,
       runHeaders,
       runQuery,
-      runVariables
+      runVariables,
+      runAuth
     )
     const duration = Date.now() - startTime
 
@@ -623,6 +666,7 @@ const runQuery = async () => {
           query: runQuery,
           headers: runHeaders,
           variables: runVariables,
+          auth: runAuth,
         }),
         response: response.value,
         star: false,
@@ -659,7 +703,6 @@ const prettifyQuery = () => {
     toast.error(`${t("error.gql_prettify_invalid_query")}`)
     prettifyQueryIcon.value = "info"
   }
-  setTimeout(() => (prettifyQueryIcon.value = "wand"), 1000)
 }
 
 const saveRequest = () => {
@@ -670,7 +713,6 @@ const copyVariables = () => {
   copyToClipboard(variableString.value)
   copyVariablesIcon.value = "check"
   toast.success(`${t("state.copied_to_clipboard")}`)
-  setTimeout(() => (copyVariablesIcon.value = "copy"), 1000)
 }
 
 const prettifyVariableString = () => {
@@ -683,7 +725,6 @@ const prettifyVariableString = () => {
     prettifyVariablesIcon.value = "info"
     toast.error(`${t("error.json_prettify_invalid_body")}`)
   }
-  setTimeout(() => (prettifyVariablesIcon.value = "wand"), 1000)
 }
 
 const clearGQLQuery = () => {

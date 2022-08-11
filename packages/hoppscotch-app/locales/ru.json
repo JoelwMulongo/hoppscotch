@@ -9,6 +9,7 @@
     "delete": "Удалить",
     "disconnect": "Отключиться",
     "dismiss": "Скрыть",
+    "dont_save": "Don't save",
     "download_file": "Скачать файл",
     "duplicate": "Дублировать",
     "edit": "Редактировать",
@@ -44,6 +45,10 @@
     "chat_with_us": "Связаться с нами",
     "contact_us": "Свяжитесь с нами",
     "copy": "Копировать",
+    "copy_user_id": "Copy User Auth Token",
+    "developer_option": "Developer options",
+    "developer_option_description": "Developer tools which helps in development and maintenance of Hoppscotch.",
+    "discord": "Discord",
     "documentation": "Документация",
     "github": "GitHub",
     "help": "Справка, отзывы и документация",
@@ -55,6 +60,7 @@
     "keyboard_shortcuts": "Горячие клавиши",
     "name": "Hoppscotch",
     "new_version_found": "Найдена новая версия. Перезагрузите для обновления.",
+    "options": "Options",
     "proxy_privacy_policy": "Политика конфиденциальности прокси",
     "reload": "Перезагрузить",
     "search": "Поиск",
@@ -62,6 +68,7 @@
     "shortcuts": "Ярлыки",
     "spotlight": "Прожектор",
     "status": "Статус",
+    "status_description": "Check the status of the website",
     "terms_and_privacy": "Условия и конфиденциальность",
     "twitter": "Твиттер",
     "type_a_command_search": "Введите команду или выполните поиск…",
@@ -75,6 +82,7 @@
     "continue_with_email": "Продолжить с электронной почтой",
     "continue_with_github": "Продолжить с GitHub",
     "continue_with_google": "Продолжить с Google",
+    "continue_with_microsoft": "Continue with Microsoft",
     "email": "Электронное письмо",
     "logged_out": "Вышли из",
     "login": "Авторизоваться",
@@ -103,6 +111,7 @@
     "invalid_name": "Укажите допустимое название коллекции",
     "my_collections": "Мои коллекции",
     "name": "Новая коллекция",
+    "name_length_insufficient": "Collection name should be at least 3 characters long",
     "new": "Создать коллекцию",
     "renamed": "Коллекция переименована",
     "request_in_use": "Запрос обрабатывается",
@@ -122,6 +131,7 @@
     "remove_request": "Вы уверены, что хотите навсегда удалить этот запрос?",
     "remove_team": "Вы уверены, что хотите удалить эту команду?",
     "remove_telemetry": "Вы действительно хотите отказаться от телеметрии?",
+    "request_change": "Are you sure you want to discard current request, unsaved changes will be lost.",
     "sync": "Вы уверены, что хотите синхронизировать это рабочее пространство?"
   },
   "count": {
@@ -162,6 +172,7 @@
     "add_to_global": "Add to Global",
     "added": "Environment addition",
     "create_new": "Создать новую среду",
+    "created": "Environment created",
     "deleted": "Environment deletion",
     "edit": "Редактировать среду",
     "invalid_name": "Укажите допустимое имя для среды",
@@ -204,6 +215,7 @@
     "created": "Папка создана",
     "edit": "Редактировать папку",
     "invalid_name": "Укажите имя для папки",
+    "name_length_insufficient": "Folder name should be at least 3 characters long",
     "new": "Новая папка",
     "renamed": "Папка переименована"
   },
@@ -213,7 +225,6 @@
     "subscriptions": "Подписки"
   },
   "header": {
-    "account": "Счет",
     "install_pwa": "Установить приложение",
     "login": "Авторизоваться",
     "save_workspace": "Сохранить мою рабочую область"
@@ -231,6 +242,7 @@
     "tests": "Напишите тестовый сценарий для автоматизации отладки."
   },
   "hide": {
+    "collection": "Collapse Collection Panel",
     "more": "Скрыть больше",
     "preview": "Скрыть предварительный просмотр",
     "sidebar": "Скрыть боковую панель"
@@ -257,7 +269,10 @@
     "title": "Импортировать"
   },
   "layout": {
+    "collapse_collection": "Collapse or Expand Collections",
+    "collapse_sidebar": "Collapse or Expand the sidebar",
     "column": "Вертикальное оформление",
+    "name": "Layout",
     "row": "Горизонтальное оформление",
     "zen_mode": "Спокойный режим"
   },
@@ -325,8 +340,13 @@
     "invalid_name": "Укажите имя для запроса",
     "method": "Методика",
     "name": "Имя запроса",
+    "new": "New Request",
+    "override": "Override",
+    "override_help": "Set <xmp>Content-Type</xmp> in Headers",
+    "overriden": "Overridden",
     "parameter_list": "Параметры запроса",
     "parameters": "Параметры",
+    "path": "Путь",
     "payload": "Полезная нагрузка",
     "query": "Запрос",
     "raw_body": "Необработанное тело запроса",
@@ -336,6 +356,7 @@
     "save_as": "Сохранить как",
     "saved": "Запрос сохранен",
     "share": "Делиться",
+    "share_description": "Share Hoppscotch with your friends",
     "title": "Запрос",
     "type": "Тип запроса",
     "url": "URL",
@@ -375,6 +396,7 @@
     "extension_version": "Версия расширения",
     "extensions": "Расширения",
     "extensions_use_toggle": "Используйте расширение браузера для отправки запросов (если есть)",
+    "follow": "Follow Us",
     "font_size": "Размер шрифта",
     "font_size_large": "Большой",
     "font_size_medium": "Середина",
@@ -438,7 +460,6 @@
       "head_method": "Выберите метод HEAD",
       "method": "Методика",
       "next_method": "Выберите следующий метод",
-      "path": "Путь",
       "post_method": "Выберите метод POST",
       "previous_method": "Выбрать предыдущий метод",
       "put_method": "Выберите метод PUT",
@@ -457,6 +478,7 @@
   },
   "show": {
     "code": "Показать код",
+    "collection": "Expand Collection Panel",
     "more": "Показать больше",
     "sidebar": "Показать боковую панель"
   },
@@ -503,6 +525,7 @@
     "community": "Задавайте вопросы и помогайте другим",
     "documentation": "Узнать больше о Hoppscotch",
     "forum": "Задавайте вопросы и получайте ответы",
+    "github": "Follow us on Github",
     "shortcuts": "Просматривайте приложение быстрее",
     "team": "Свяжитесь с командой",
     "title": "Служба поддержки",
@@ -567,6 +590,7 @@
     "new_name": "Моя новая команда",
     "no_access": "У вас нет прав на редактирование этих коллекций",
     "no_invite_found": "Такое приглашение мы не смогли найти. Свяжитесь с руководителем команды.",
+    "not_found": "Team not found. Contact your team owner.",
     "not_valid_viewer": "У Вас нет прав просматривать это. Свяжитесь с руководителем команды.",
     "pending_invites": "Ожидающие приглашения",
     "permissions": "Разрешения",

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="sticky top-0 z-10 flex flex-shrink-0 p-4 overflow-x-auto space-x-2 bg-primary hide-scrollbar"
+    class="sticky top-0 z-10 flex-none p-4 overflow-x-auto sm:flex sm:flex-shrink-0 sm:space-x-2 bg-primary hide-scrollbar"
   >
     <div
       class="flex flex-1 overflow-auto border rounded min-w-52 border-divider whitespace-nowrap hide-scrollbar"
@@ -48,7 +48,8 @@
         />
       </div>
     </div>
-    <div class="flex">
+
+    <div class="flex mt-2 sm:mt-0">
       <ButtonPrimary
         id="send"
         class="flex-1 rounded-r-none min-w-20"
@@ -117,8 +118,8 @@
         </tippy>
       </span>
       <ButtonSecondary
-        class="ml-2 rounded rounded-r-none"
-        :label="mdAndLarger && COLUMN_LAYOUT ? `${t('request.save')}` : ''"
+        class="flex-1 ml-2 rounded rounded-r-none"
+        :label="COLUMN_LAYOUT ? `${t('request.save')}` : ''"
         filled
         svg="save"
         @click.native="saveRequest()"
@@ -171,6 +172,12 @@
               "
             />
             <SmartItem
+              svg="link-2"
+              :label="`${t('request.view_my_links')}`"
+              to="/profile"
+            />
+            <hr />
+            <SmartItem
               ref="saveRequestAction"
               :label="`${t('request.save_as')}`"
               svg="folder-plus"
@@ -207,7 +214,8 @@
 import { computed, ref, watch } from "@nuxtjs/composition-api"
 import { isLeft, isRight } from "fp-ts/lib/Either"
 import * as E from "fp-ts/Either"
-import { breakpointsTailwind, useBreakpoints } from "@vueuse/core"
+import cloneDeep from "lodash/cloneDeep"
+import { refAutoReset } from "@vueuse/core"
 import {
   updateRESTResponse,
   restEndpoint$,
@@ -386,7 +394,11 @@ const clearContent = () => {
   resetRESTRequest()
 }
 
-const copyLinkIcon = hasNavigatorShare ? ref("share-2") : ref("copy")
+const copyLinkIcon = refAutoReset<"share-2" | "copy" | "check">(
+  hasNavigatorShare ? "share-2" : "copy",
+  1000
+)
+
 const shareLink = ref<string | null>("")
 const fetchingShareLink = ref(false)
 
@@ -441,7 +453,6 @@ const copyShareLink = (shareLink: string) => {
     copyLinkIcon.value = "check"
     copyToClipboard(`https://hopp.sh/r${shareLink}`)
     toast.success(`${t("state.copied_to_clipboard")}`)
-    setTimeout(() => (copyLinkIcon.value = "copy"), 2000)
   }
 }
 
@@ -477,14 +488,21 @@ const saveRequest = () => {
     showSaveRequestModal.value = true
     return
   }
-
   if (saveCtx.originLocation === "user-collection") {
+    const req = getRESTRequest()
+
     try {
       editRESTRequest(
         saveCtx.folderPath,
         saveCtx.requestIndex,
         getRESTRequest()
       )
+      setRESTSaveContext({
+        originLocation: "user-collection",
+        folderPath: saveCtx.folderPath,
+        requestIndex: saveCtx.requestIndex,
+        req: cloneDeep(req),
+      })
       toast.success(`${t("request.saved")}`)
     } catch (e) {
       setRESTSaveContext(null)
@@ -505,6 +523,11 @@ const saveRequest = () => {
         if (E.isLeft(result)) {
           toast.error(`${t("profile.no_permission")}`)
         } else {
+          setRESTSaveContext({
+            originLocation: "team-collection",
+            requestID: saveCtx.requestID,
+            req: cloneDeep(req),
+          })
           toast.success(`${t("request.saved")}`)
         }
       })
@@ -542,7 +565,4 @@ const isCustomMethod = computed(() => {
 const requestName = useRESTRequestName()
 
 const COLUMN_LAYOUT = useSetting("COLUMN_LAYOUT")
-
-const breakpoints = useBreakpoints(breakpointsTailwind)
-const mdAndLarger = breakpoints.greater("md")
 </script>

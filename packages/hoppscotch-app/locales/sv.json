@@ -9,6 +9,7 @@
     "delete": "Radera",
     "disconnect": "Koppla ifrån",
     "dismiss": "Avfärda",
+    "dont_save": "Don't save",
     "download_file": "Nedladdning fil",
     "duplicate": "Duplicate",
     "edit": "Redigera",
@@ -44,6 +45,10 @@
     "chat_with_us": "chatta med oss",
     "contact_us": "Kontakta oss",
     "copy": "Kopiera",
+    "copy_user_id": "Copy User Auth Token",
+    "developer_option": "Developer options",
+    "developer_option_description": "Developer tools which helps in development and maintenance of Hoppscotch.",
+    "discord": "Discord",
     "documentation": "Dokumentation",
     "github": "GitHub",
     "help": "Hjälp, feedback och dokumentation",
@@ -55,6 +60,7 @@
     "keyboard_shortcuts": "Tangentbordsgenvägar",
     "name": "Hoppscotch",
     "new_version_found": "Ny version hittades. Uppdatera för att uppdatera.",
+    "options": "Options",
     "proxy_privacy_policy": "Sekretesspolicy för proxy",
     "reload": "Ladda om",
     "search": "Sök",
@@ -62,6 +68,7 @@
     "shortcuts": "Genvägar",
     "spotlight": "Strålkastare",
     "status": "Status",
+    "status_description": "Check the status of the website",
     "terms_and_privacy": "Villkor och sekretess",
     "twitter": "Twitter",
     "type_a_command_search": "Skriv ett kommando eller sök ...",
@@ -75,6 +82,7 @@
     "continue_with_email": "Fortsätt med e -post",
     "continue_with_github": "Fortsätt med GitHub",
     "continue_with_google": "Fortsätt med Google",
+    "continue_with_microsoft": "Continue with Microsoft",
     "email": "E-post",
     "logged_out": "Utloggad",
     "login": "Logga in",
@@ -103,6 +111,7 @@
     "invalid_name": "Ange ett giltigt namn för samlingen",
     "my_collections": "Mina samlingar",
     "name": "Min nya samling",
+    "name_length_insufficient": "Collection name should be at least 3 characters long",
     "new": "Ny kollektion",
     "renamed": "Samling bytt namn",
     "request_in_use": "Request in use",
@@ -122,6 +131,7 @@
     "remove_request": "Är du säker på att du vill radera denna begäran permanent?",
     "remove_team": "Är du säker på att du vill ta bort det här laget?",
     "remove_telemetry": "Är du säker på att du vill välja bort telemetri?",
+    "request_change": "Are you sure you want to discard current request, unsaved changes will be lost.",
     "sync": "Är du säker på att du vill synkronisera den här arbetsytan?"
   },
   "count": {
@@ -162,6 +172,7 @@
     "add_to_global": "Add to Global",
     "added": "Environment addition",
     "create_new": "Skapa ny miljö",
+    "created": "Environment created",
     "deleted": "Environment deletion",
     "edit": "Redigera miljö",
     "invalid_name": "Ange ett giltigt namn på miljön",
@@ -204,6 +215,7 @@
     "created": "Mapp skapad",
     "edit": "Redigera mapp",
     "invalid_name": "Ange ett namn på mappen",
+    "name_length_insufficient": "Folder name should be at least 3 characters long",
     "new": "Ny mapp",
     "renamed": "Mappen har bytt namn"
   },
@@ -213,7 +225,6 @@
     "subscriptions": "Prenumerationer"
   },
   "header": {
-    "account": "konto",
     "install_pwa": "Installera app",
     "login": "Logga in",
     "save_workspace": "Spara min arbetsyta"
@@ -231,6 +242,7 @@
     "tests": "Skriv ett testskript för att automatisera felsökning."
   },
   "hide": {
+    "collection": "Collapse Collection Panel",
     "more": "Dölj mer",
     "preview": "Dölj förhandsgranskning",
     "sidebar": "Dölj sidofältet"
@@ -257,7 +269,10 @@
     "title": "Importera"
   },
   "layout": {
+    "collapse_collection": "Collapse or Expand Collections",
+    "collapse_sidebar": "Collapse or Expand the sidebar",
     "column": "Vertical layout",
+    "name": "Layout",
     "row": "Horizontal layout",
     "zen_mode": "Zen -läge"
   },
@@ -325,8 +340,13 @@
     "invalid_name": "Ange ett namn på begäran",
     "method": "Metod",
     "name": "Begär namn",
+    "new": "New Request",
+    "override": "Override",
+    "override_help": "Set <xmp>Content-Type</xmp> in Headers",
+    "overriden": "Overridden",
     "parameter_list": "Frågeparametrar",
     "parameters": "Parametrar",
+    "path": "Väg",
     "payload": "Nyttolast",
     "query": "Fråga",
     "raw_body": "Raw Request Body",
@@ -336,6 +356,7 @@
     "save_as": "Spara som",
     "saved": "Begäran sparad",
     "share": "Dela med sig",
+    "share_description": "Share Hoppscotch with your friends",
     "title": "Begäran",
     "type": "Typ av förfrågan",
     "url": "URL",
@@ -375,6 +396,7 @@
     "extension_version": "Tilläggsversion",
     "extensions": "Tillägg",
     "extensions_use_toggle": "Använd webbläsartillägget för att skicka förfrågningar (om sådana finns)",
+    "follow": "Follow Us",
     "font_size": "Textstorlek",
     "font_size_large": "Stor",
     "font_size_medium": "Medium",
@@ -438,7 +460,6 @@
       "head_method": "Välj HEAD -metod",
       "method": "Metod",
       "next_method": "Välj Nästa metod",
-      "path": "Väg",
       "post_method": "Välj POST -metod",
       "previous_method": "Välj föregående metod",
       "put_method": "Välj PUT -metod",
@@ -457,6 +478,7 @@
   },
   "show": {
     "code": "Visa kod",
+    "collection": "Expand Collection Panel",
     "more": "Visa mer",
     "sidebar": "Visa sidofältet"
   },
@@ -503,6 +525,7 @@
     "community": "Ställ frågor och hjälp andra",
     "documentation": "Läs mer om Hoppscotch",
     "forum": "Ställ frågor och få svar",
+    "github": "Follow us on Github",
     "shortcuts": "Bläddra snabbare i appen",
     "team": "Ta kontakt med laget",
     "title": "Stöd",
@@ -567,6 +590,7 @@
     "new_name": "Mitt nya team",
     "no_access": "Du har inte redigeringsåtkomst till dessa samlingar",
     "no_invite_found": "Invitation not found. Contact your team owner.",
+    "not_found": "Team not found. Contact your team owner.",
     "not_valid_viewer": "You are not a valid viewer. Contact your team owner.",
     "pending_invites": "Pending invites",
     "permissions": "Behörigheter",

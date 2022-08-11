@@ -9,6 +9,7 @@
     "delete": "Excluir",
     "disconnect": "desconectar",
     "dismiss": "Dispensar",
+    "dont_save": "Don't save",
     "download_file": "⇬ Fazer download do arquivo",
     "duplicate": "Duplicate",
     "edit": "Editar",
@@ -44,6 +45,10 @@
     "chat_with_us": "Converse conosco",
     "contact_us": "Contate-Nos",
     "copy": "cópia de",
+    "copy_user_id": "Copy User Auth Token",
+    "developer_option": "Developer options",
+    "developer_option_description": "Developer tools which helps in development and maintenance of Hoppscotch.",
+    "discord": "Discord",
     "documentation": "Documentação",
     "github": "GitHub",
     "help": "Ajuda, feedback e documentação",
@@ -55,6 +60,7 @@
     "keyboard_shortcuts": "Atalhos do teclado",
     "name": "Hoppscotch",
     "new_version_found": "Nova versão encontrada. Atualize para atualizar.",
+    "options": "Options",
     "proxy_privacy_policy": "Política de privacidade do proxy",
     "reload": "recarregar",
     "search": "Procurar",
@@ -62,6 +68,7 @@
     "shortcuts": "Atalhos",
     "spotlight": "Holofote",
     "status": "Status",
+    "status_description": "Check the status of the website",
     "terms_and_privacy": "Termos e privacidade",
     "twitter": "Twitter",
     "type_a_command_search": "Digite um comando ou pesquise ...",
@@ -75,6 +82,7 @@
     "continue_with_email": "Continue com Email",
     "continue_with_github": "Continue com GitHub",
     "continue_with_google": "Continue com o Google",
+    "continue_with_microsoft": "Continue with Microsoft",
     "email": "E-mail",
     "logged_out": "Desconectado",
     "login": "Conecte-se",
@@ -103,6 +111,7 @@
     "invalid_name": "Forneça um nome válido para a coleção",
     "my_collections": "Minhas coleções",
     "name": "Minha nova coleção",
+    "name_length_insufficient": "Collection name should be at least 3 characters long",
     "new": "Nova coleção",
     "renamed": "Coleção renomeada",
     "request_in_use": "Request in use",
@@ -122,6 +131,7 @@
     "remove_request": "Tem certeza de que deseja excluir permanentemente esta solicitação?",
     "remove_team": "Tem certeza que deseja excluir esta equipe?",
     "remove_telemetry": "Tem certeza de que deseja cancelar a telemetria?",
+    "request_change": "Are you sure you want to discard current request, unsaved changes will be lost.",
     "sync": "Tem certeza de que deseja sincronizar este espaço de trabalho?"
   },
   "count": {
@@ -162,6 +172,7 @@
     "add_to_global": "Add to Global",
     "added": "Environment addition",
     "create_new": "Crie um novo ambiente",
+    "created": "Environment created",
     "deleted": "Environment deletion",
     "edit": "Editar Ambiente",
     "invalid_name": "Forneça um nome válido para o ambiente",
@@ -204,6 +215,7 @@
     "created": "Pasta criada",
     "edit": "Editar pasta",
     "invalid_name": "Forneça um nome para a pasta",
+    "name_length_insufficient": "Folder name should be at least 3 characters long",
     "new": "Nova pasta",
     "renamed": "Pasta renomeada"
   },
@@ -213,7 +225,6 @@
     "subscriptions": "Assinaturas"
   },
   "header": {
-    "account": "Conta",
     "install_pwa": "Instalar aplicativo",
     "login": "Conecte-se",
     "save_workspace": "Salvar meu espaço de trabalho"
@@ -231,6 +242,7 @@
     "tests": "Escreva um script de teste para automatizar a depuração."
   },
   "hide": {
+    "collection": "Collapse Collection Panel",
     "more": "Esconda mais",
     "preview": "Esconder a Antevisão",
     "sidebar": "Ocultar barra lateral"
@@ -257,7 +269,10 @@
     "title": "Importar"
   },
   "layout": {
+    "collapse_collection": "Collapse or Expand Collections",
+    "collapse_sidebar": "Collapse or Expand the sidebar",
     "column": "Vertical layout",
+    "name": "Layout",
     "row": "Horizontal layout",
     "zen_mode": "Modo zen"
   },
@@ -325,8 +340,13 @@
     "invalid_name": "Forneça um nome para o pedido",
     "method": "Método",
     "name": "Nome do pedido",
+    "new": "New Request",
+    "override": "Override",
+    "override_help": "Set <xmp>Content-Type</xmp> in Headers",
+    "overriden": "Overridden",
     "parameter_list": "Parâmetros de consulta",
     "parameters": "Parâmetros",
+    "path": "Caminho",
     "payload": "Carga útil",
     "query": "Consulta",
     "raw_body": "Corpo de Solicitação Bruta",
@@ -336,6 +356,7 @@
     "save_as": "Salvar como",
     "saved": "Pedido salvo",
     "share": "Compartilhado",
+    "share_description": "Share Hoppscotch with your friends",
     "title": "Solicitar",
     "type": "Tipo de solicitação",
     "url": "URL",
@@ -375,6 +396,7 @@
     "extension_version": "Versão da extensão",
     "extensions": "Extensões",
     "extensions_use_toggle": "Use a extensão do navegador para enviar solicitações (se houver)",
+    "follow": "Follow Us",
     "font_size": "Tamanho da fonte",
     "font_size_large": "Grande",
     "font_size_medium": "Médio",
@@ -438,7 +460,6 @@
       "head_method": "Selecione o método HEAD",
       "method": "Método",
       "next_method": "Selecione o próximo método",
-      "path": "Caminho",
       "post_method": "Selecione o método POST",
       "previous_method": "Selecione o método anterior",
       "put_method": "Selecione o método PUT",
@@ -457,6 +478,7 @@
   },
   "show": {
     "code": "Exibir código",
+    "collection": "Expand Collection Panel",
     "more": "Mostre mais",
     "sidebar": "Mostrar barra lateral"
   },
@@ -489,7 +511,7 @@
     "download_started": "Download iniciado",
     "enabled": "Habilitado",
     "file_imported": "Arquivo importado",
-    "finished_in": "Terminado em {duração} ms",
+    "finished_in": "Terminado em {duration} ms",
     "history_deleted": "Histórico excluído",
     "linewrap": "Quebrar linhas",
     "loading": "Carregando...",
@@ -503,6 +525,7 @@
     "community": "Faça perguntas e ajude os outros",
     "documentation": "Leia mais sobre Hoppscotch",
     "forum": "Faça perguntas e obtenha respostas",
+    "github": "Follow us on Github",
     "shortcuts": "Navegue pelo aplicativo mais rápido",
     "team": "Entre em contato com a equipe",
     "title": "Apoio, suporte",
@@ -567,6 +590,7 @@
     "new_name": "Minha Nova Equipe",
     "no_access": "Você não tem acesso de edição a essas coleções",
     "no_invite_found": "Invitation not found. Contact your team owner.",
+    "not_found": "Team not found. Contact your team owner.",
     "not_valid_viewer": "You are not a valid viewer. Contact your team owner.",
     "pending_invites": "Pending invites",
     "permissions": "Permissões",

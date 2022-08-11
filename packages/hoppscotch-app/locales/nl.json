@@ -9,6 +9,7 @@
     "delete": "Verwijderen",
     "disconnect": "Verbinding verbreken",
     "dismiss": "Afwijzen",
+    "dont_save": "Don't save",
     "download_file": "Download bestand",
     "duplicate": "Duplicate",
     "edit": "Bewerking",
@@ -44,6 +45,10 @@
     "chat_with_us": "Chat met ons",
     "contact_us": "Neem contact op",
     "copy": "Kopiëren",
+    "copy_user_id": "Copy User Auth Token",
+    "developer_option": "Developer options",
+    "developer_option_description": "Developer tools which helps in development and maintenance of Hoppscotch.",
+    "discord": "Discord",
     "documentation": "Documentatie",
     "github": "GitHub",
     "help": "Hulp, feedback en documentatie",
@@ -55,6 +60,7 @@
     "keyboard_shortcuts": "Toetsenbord sneltoetsen",
     "name": "Hoppscotch",
     "new_version_found": "Nieuwe versie gevonden. Vernieuwen om te updaten.",
+    "options": "Options",
     "proxy_privacy_policy": "Proxy-privacybeleid",
     "reload": "Herladen",
     "search": "Zoeken",
@@ -62,6 +68,7 @@
     "shortcuts": "Sneltoetsen",
     "spotlight": "Spotlight",
     "status": "Toestand",
+    "status_description": "Check the status of the website",
     "terms_and_privacy": "Voorwaarden en privacy",
     "twitter": "Twitter",
     "type_a_command_search": "Typ een opdracht of zoek...",
@@ -75,6 +82,7 @@
     "continue_with_email": "Ga verder met e-mail",
     "continue_with_github": "Ga verder met GitHub",
     "continue_with_google": "Ga verder met Google",
+    "continue_with_microsoft": "Continue with Microsoft",
     "email": "E-mail",
     "logged_out": "Uitgelogd",
     "login": "Log in",
@@ -103,6 +111,7 @@
     "invalid_name": "Geef een geldige naam op voor de collectie",
     "my_collections": "Mijn collecties",
     "name": "Mijn nieuwe collectie",
+    "name_length_insufficient": "Collection name should be at least 3 characters long",
     "new": "Nieuwe collectie",
     "renamed": "Collectie hernoemd",
     "request_in_use": "Request in use",
@@ -122,6 +131,7 @@
     "remove_request": "Weet u zeker dat u dit verzoek definitief wilt verwijderen?",
     "remove_team": "Weet je zeker dat je dit team wilt verwijderen?",
     "remove_telemetry": "Weet u zeker dat u zich wilt afmelden voor telemetrie?",
+    "request_change": "Are you sure you want to discard current request, unsaved changes will be lost.",
     "sync": "Weet u zeker dat u deze werkruimte wilt synchroniseren?"
   },
   "count": {
@@ -162,6 +172,7 @@
     "add_to_global": "Add to Global",
     "added": "Environment addition",
     "create_new": "Nieuwe omgeving maken",
+    "created": "Environment created",
     "deleted": "Environment deletion",
     "edit": "Omgeving bewerken",
     "invalid_name": "Geef een geldige naam op voor de omgeving",
@@ -204,6 +215,7 @@
     "created": "Map aangemaakt",
     "edit": "Map bewerken",
     "invalid_name": "Geef een naam op voor de map",
+    "name_length_insufficient": "Folder name should be at least 3 characters long",
     "new": "Nieuwe map",
     "renamed": "Map hernoemd"
   },
@@ -213,7 +225,6 @@
     "subscriptions": "Abonnementen"
   },
   "header": {
-    "account": "Rekening",
     "install_pwa": "Installeer app",
     "login": "Log in",
     "save_workspace": "Bewaar mijn werkruimte"
@@ -231,6 +242,7 @@
     "tests": "Schrijf een testscript om foutopsporing te automatiseren."
   },
   "hide": {
+    "collection": "Collapse Collection Panel",
     "more": "Meer verbergen",
     "preview": "Voorbeeld verbergen",
     "sidebar": "Verberg de zijbalk"
@@ -257,7 +269,10 @@
     "title": "Importeren"
   },
   "layout": {
+    "collapse_collection": "Collapse or Expand Collections",
+    "collapse_sidebar": "Collapse or Expand the sidebar",
     "column": "Vertical layout",
+    "name": "Layout",
     "row": "Horizontal layout",
     "zen_mode": "Zen-modus"
   },
@@ -325,8 +340,13 @@
     "invalid_name": "Geef een naam op voor het verzoek",
     "method": "Methode",
     "name": "Naam aanvragen",
+    "new": "New Request",
+    "override": "Override",
+    "override_help": "Set <xmp>Content-Type</xmp> in Headers",
+    "overriden": "Overridden",
     "parameter_list": "Queryparameters",
     "parameters": "Parameters:",
+    "path": "Pad",
     "payload": "Payload",
     "query": "Vraag",
     "raw_body": "Ruwe body",
@@ -336,6 +356,7 @@
     "save_as": "Opslaan als",
     "saved": "Verzoek opgeslagen",
     "share": "Deel",
+    "share_description": "Share Hoppscotch with your friends",
     "title": "Verzoek",
     "type": "Aanvraag type",
     "url": "URL",
@@ -375,6 +396,7 @@
     "extension_version": "Extensie versie",
     "extensions": "Extensies",
     "extensions_use_toggle": "Gebruik de browserextensie om verzoeken te versturen (indien aanwezig)",
+    "follow": "Follow Us",
     "font_size": "Lettergrootte",
     "font_size_large": "Groot",
     "font_size_medium": "Medium",
@@ -438,7 +460,6 @@
       "head_method": "Selecteer HEAD-methode:",
       "method": "Methode",
       "next_method": "Selecteer volgende methode",
-      "path": "Pad",
       "post_method": "Selecteer POST-methode",
       "previous_method": "Selecteer vorige methode",
       "put_method": "Selecteer PUT-methode",
@@ -457,6 +478,7 @@
   },
   "show": {
     "code": "Toon code",
+    "collection": "Expand Collection Panel",
     "more": "Laat meer zien",
     "sidebar": "Toon zijbalk"
   },
@@ -489,7 +511,7 @@
     "download_started": "Download gestart",
     "enabled": "ingeschakeld",
     "file_imported": "Bestand geïmporteerd",
-    "finished_in": "Klaar in {duration}ms",
+    "finished_in": "Klaar in {duration} ms",
     "history_deleted": "Geschiedenis verwijderd",
     "linewrap": "Regels afbreken",
     "loading": "Bezig met laden...",
@@ -503,6 +525,7 @@
     "community": "Stel vragen en help anderen",
     "documentation": "Lees meer over Hoppscotch",
     "forum": "Stel vragen en krijg antwoorden",
+    "github": "Follow us on Github",
     "shortcuts": "Sneller door de app bladeren",
     "team": "Neem contact op met het team",
     "title": "Steun",
@@ -567,6 +590,7 @@
     "new_name": "Mijn nieuwe team",
     "no_access": "U heeft geen bewerkingsrechten voor deze collecties",
     "no_invite_found": "Invitation not found. Contact your team owner.",
+    "not_found": "Team not found. Contact your team owner.",
     "not_valid_viewer": "You are not a valid viewer. Contact your team owner.",
     "pending_invites": "Pending invites",
     "permissions": "Rechten",

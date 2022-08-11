@@ -1,18 +1,17 @@
 <template>
-  <SmartTabs styles="sticky bg-primary z-10 top-0" vertical>
-    <SmartTab
-      :id="'history'"
-      icon="clock"
-      :label="`${t('tab.history')}`"
-      :selected="true"
-    >
+  <SmartTabs
+    v-model="selectedNavigationTab"
+    styles="sticky bg-primary z-10 top-0"
+    vertical
+    render-inactive-tabs
+  >
+    <SmartTab :id="'history'" icon="clock" :label="`${t('tab.history')}`">
       <History
         ref="graphqlHistoryComponent"
         :page="'graphql'"
         @useHistory="handleUseHistory"
       />
     </SmartTab>
-
     <SmartTab
       :id="'collections'"
       icon="folder"
@@ -20,7 +19,6 @@
     >
       <CollectionsGraphql />
     </SmartTab>
-
     <SmartTab
       :id="'docs'"
       icon="book-open"
@@ -52,7 +50,7 @@
             type="search"
             autocomplete="off"
             :placeholder="`${t('action.search')}`"
-            class="flex w-full p-4 py-2 bg-transparent"
+            class="flex flex-1 p-4 py-2 bg-transparent"
           />
           <div class="flex">
             <ButtonSecondary
@@ -65,75 +63,71 @@
           </div>
         </div>
         <SmartTabs
-          ref="gqlTabs"
+          v-model="selectedGqlTab"
           styles="border-t border-b border-dividerLight bg-primary sticky z-10 top-sidebarPrimaryStickyFold"
+          render-inactive-tabs
         >
-          <div class="gqlTabs">
-            <SmartTab
-              v-if="queryFields.length > 0"
-              :id="'queries'"
-              :label="`${t('tab.queries')}`"
-              :selected="true"
-              class="divide-y divide-dividerLight"
-            >
-              <GraphqlField
-                v-for="(field, index) in filteredQueryFields"
-                :key="`field-${index}`"
-                :gql-field="field"
-                :jump-type-callback="handleJumpToType"
-                class="p-4"
-              />
-            </SmartTab>
-            <SmartTab
-              v-if="mutationFields.length > 0"
-              :id="'mutations'"
-              :label="`${t('graphql.mutations')}`"
-              class="divide-y divide-dividerLight"
-            >
-              <GraphqlField
-                v-for="(field, index) in filteredMutationFields"
-                :key="`field-${index}`"
-                :gql-field="field"
-                :jump-type-callback="handleJumpToType"
-                class="p-4"
-              />
-            </SmartTab>
-            <SmartTab
-              v-if="subscriptionFields.length > 0"
-              :id="'subscriptions'"
-              :label="`${t('graphql.subscriptions')}`"
-              class="divide-y divide-dividerLight"
-            >
-              <GraphqlField
-                v-for="(field, index) in filteredSubscriptionFields"
-                :key="`field-${index}`"
-                :gql-field="field"
-                :jump-type-callback="handleJumpToType"
-                class="p-4"
-              />
-            </SmartTab>
-            <SmartTab
-              v-if="graphqlTypes.length > 0"
-              :id="'types'"
-              ref="typesTab"
-              :label="`${t('tab.types')}`"
-              class="divide-y divide-dividerLight"
-            >
-              <GraphqlType
-                v-for="(type, index) in filteredGraphqlTypes"
-                :key="`type-${index}`"
-                :gql-type="type"
-                :gql-types="graphqlTypes"
-                :is-highlighted="isGqlTypeHighlighted(type)"
-                :highlighted-fields="getGqlTypeHighlightedFields(type)"
-                :jump-type-callback="handleJumpToType"
-              />
-            </SmartTab>
-          </div>
+          <SmartTab
+            v-if="queryFields.length > 0"
+            :id="'queries'"
+            :label="`${t('tab.queries')}`"
+            class="divide-y divide-dividerLight"
+          >
+            <GraphqlField
+              v-for="(field, index) in filteredQueryFields"
+              :key="`field-${index}`"
+              :gql-field="field"
+              :jump-type-callback="handleJumpToType"
+              class="p-4"
+            />
+          </SmartTab>
+          <SmartTab
+            v-if="mutationFields.length > 0"
+            :id="'mutations'"
+            :label="`${t('graphql.mutations')}`"
+            class="divide-y divide-dividerLight"
+          >
+            <GraphqlField
+              v-for="(field, index) in filteredMutationFields"
+              :key="`field-${index}`"
+              :gql-field="field"
+              :jump-type-callback="handleJumpToType"
+              class="p-4"
+            />
+          </SmartTab>
+          <SmartTab
+            v-if="subscriptionFields.length > 0"
+            :id="'subscriptions'"
+            :label="`${t('graphql.subscriptions')}`"
+            class="divide-y divide-dividerLight"
+          >
+            <GraphqlField
+              v-for="(field, index) in filteredSubscriptionFields"
+              :key="`field-${index}`"
+              :gql-field="field"
+              :jump-type-callback="handleJumpToType"
+              class="p-4"
+            />
+          </SmartTab>
+          <SmartTab
+            v-if="graphqlTypes.length > 0"
+            :id="'types'"
+            :label="`${t('tab.types')}`"
+            class="divide-y divide-dividerLight"
+          >
+            <GraphqlType
+              v-for="(type, index) in filteredGraphqlTypes"
+              :key="`type-${index}`"
+              :gql-type="type"
+              :gql-types="graphqlTypes"
+              :is-highlighted="isGqlTypeHighlighted(type)"
+              :highlighted-fields="getGqlTypeHighlightedFields(type)"
+              :jump-type-callback="handleJumpToType"
+            />
+          </SmartTab>
         </SmartTabs>
       </div>
     </SmartTab>
-
     <SmartTab :id="'schema'" icon="box" :label="`${t('tab.schema')}`">
       <div
         v-if="schemaString"
@@ -201,6 +195,7 @@ import { computed, nextTick, reactive, ref } from "@nuxtjs/composition-api"
 import { GraphQLField, GraphQLType } from "graphql"
 import { map } from "rxjs/operators"
 import { GQLHeader } from "@hoppscotch/data"
+import { refAutoReset } from "@vueuse/core"
 import { useCodemirror } from "~/helpers/editor/codemirror"
 import { GQLConnection } from "~/helpers/GQLConnection"
 import { copyToClipboard } from "~/helpers/utils/clipboard"
@@ -210,12 +205,19 @@ import {
   useToast,
 } from "~/helpers/utils/composables"
 import {
+  setGQLAuth,
   setGQLHeaders,
   setGQLQuery,
   setGQLResponse,
   setGQLURL,
   setGQLVariables,
 } from "~/newstore/GQLSession"
+
+type NavigationTabs = "history" | "collection" | "docs" | "schema"
+type GqlTabs = "queries" | "mutations" | "subscriptions" | "types"
+
+const selectedNavigationTab = ref<NavigationTabs>("history")
+const selectedGqlTab = ref<GqlTabs>("queries")
 
 const t = useI18n()
 
@@ -307,13 +309,10 @@ const graphqlTypes = useReadonlyStream(
   []
 )
 
-const downloadSchemaIcon = ref("download")
-const copySchemaIcon = ref("copy")
+const downloadSchemaIcon = refAutoReset<"download" | "check">("download", 1000)
+const copySchemaIcon = refAutoReset<"copy" | "check">("copy", 1000)
 
 const graphqlFieldsFilterText = ref("")
-
-const gqlTabs = ref<any | null>(null)
-const typesTab = ref<any | null>(null)
 
 const filteredQueryFields = computed(() => {
   return getFilteredGraphqlFields(
@@ -364,7 +363,7 @@ const getGqlTypeHighlightedFields = (gqlType: GraphQLType) => {
 }
 
 const handleJumpToType = async (type: GraphQLType) => {
-  gqlTabs.value.selectTab(typesTab.value)
+  selectedGqlTab.value = "types"
   await nextTick()
 
   const rootTypeName = resolveRootType(type).name
@@ -427,7 +426,6 @@ const downloadSchema = () => {
   setTimeout(() => {
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-    downloadSchemaIcon.value = "download"
   }, 1000)
 }
 
@@ -436,7 +434,6 @@ const copySchema = () => {
 
   copyToClipboard(schemaString.value)
   copySchemaIcon.value = "check"
-  setTimeout(() => (copySchemaIcon.value = "copy"), 1000)
 }
 
 const handleUseHistory = (entry: GQLHistoryEntry) => {
@@ -451,6 +448,10 @@ const handleUseHistory = (entry: GQLHistoryEntry) => {
   setGQLQuery(gqlQueryString)
   setGQLVariables(variableString)
   setGQLResponse(responseText)
+  setGQLAuth({
+    authType: "none",
+    authActive: true,
+  })
   props.conn.reset()
 }
 </script>
